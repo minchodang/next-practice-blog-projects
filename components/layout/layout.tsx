@@ -1,4 +1,6 @@
 import React from 'react';
+import { MainNavigation } from './main-navigation';
+import { SliderComponents } from '../slider/slider';
 
 type LayoutProps = {
     children: React.ReactElement;
@@ -7,9 +9,9 @@ type LayoutProps = {
 export const Layout = (props: LayoutProps) => {
     return (
         <>
-            {/*<MainNavigation/>*/}
-
+            <MainNavigation />
             <main>{props.children}</main>
+            <SliderComponents />
         </>
     );
 };
