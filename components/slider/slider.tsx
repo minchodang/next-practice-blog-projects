@@ -1,11 +1,11 @@
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from '@emotion/styled';
-import Slider from "react-slick";
+import Slider from 'react-slick';
 
-const StyledSlider = styled``;
+const StyledSlider = styled(Slider)``;
 
-export const StyledSliderComponents = () => {
+export const SliderComponents = () => {
     const settings = {
         dots: true,
         infinite: true,
@@ -38,6 +38,7 @@ export const StyledSliderComponents = () => {
                 <div>
                     <h3>6</h3>
                 </div>
-            </StyledSlider        </div>
+            </StyledSlider>
+        </div>
     );
 };
