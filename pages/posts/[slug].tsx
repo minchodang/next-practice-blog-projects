@@ -1,7 +1,5 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import { PostContent } from '../../components/posts/post-detail/post-content';
 
 export default function PostDetailPage() {
-  return <div></div>;
+    return <PostContent />;
 }
