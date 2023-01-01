@@ -1,5 +1,6 @@
 import { PostHeader } from './post-header';
 import styled from '@emotion/styled';
+import ReactMarkdown from 'react-markdown';
 
 const DUMMY_POST = {
     title: 'Getting Started with NextJS',
@@ -36,7 +37,7 @@ export const PostContent = () => {
     return (
         <Content>
             <PostHeader title={DUMMY_POST.title} image={imagePath} />
-            {DUMMY_POST.content}
+            <ReactMarkdown>{DUMMY_POST.content}</ReactMarkdown>
         </Content>
     );
 };
