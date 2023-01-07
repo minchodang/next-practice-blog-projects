@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { PostsGrid, PostsGridProps } from '../posts/posts-grid';
 
 const Latest = styled.section`
     width: 90%;
@@ -14,10 +15,11 @@ const Latest = styled.section`
     }
 `;
 
-export const FeaturedPosts = () => {
+export const FeaturedPosts = (props: PostsGridProps) => {
     return (
         <Latest>
             <h2>Featured Posts</h2>
+            <PostsGrid posts={props.posts} />
         </Latest>
     );
 };

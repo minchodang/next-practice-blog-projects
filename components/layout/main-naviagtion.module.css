@@ -18,6 +18,8 @@
 
 .header li {
     margin: 0 var(--size-4);
+    display: flex;
+    gap:50px;
 }
 
 .header a {
