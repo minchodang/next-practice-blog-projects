@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { PostItem } from './post-item';
-import { DUMMY_POSTS } from '../../pages';
+import { DUMMY_POSTS, getStaticProps } from '../../pages';
+import { InferGetStaticPropsType } from 'next';
 
 export interface PostsGridProps {
     posts: DUMMY_POSTS[];
@@ -16,7 +17,8 @@ const Grid = styled.ul`
     align-content: center;
 `;
 
-export const PostsGrid = ({ posts }: PostsGridProps) => {
+export const PostsGrid = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
+    console.log(posts, '뭐냐 또 왜 됨?');
     return (
         <Grid>
             {posts.map((post) => (
