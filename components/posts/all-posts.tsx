@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { PostsGrid } from './posts-grid';
-import { DUMMY_POSTS } from '../../pages';
+import { DUMMY_POSTS, getStaticProps } from '../../pages';
+import { InferGetStaticPropsType } from 'next';
 
 interface AllPostsProps {
     posts: DUMMY_POSTS[];
@@ -20,7 +21,7 @@ const Posts = styled.section`
     }
 `;
 
-export const AllPosts = ({ posts }: AllPostsProps) => {
+export const AllPosts = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
     return (
         <Posts>
             <h1>All Posts</h1>
