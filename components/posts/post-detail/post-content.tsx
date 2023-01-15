@@ -1,35 +1,52 @@
+import classes from './post-content.module.css';
+import Image from 'next/image';
 import { PostHeader } from './post-header';
-import styled from '@emotion/styled';
 import ReactMarkdown from 'react-markdown';
 
-const Content = styled.article`
-    width: 95%;
-    max-width: 60rem;
-    margin: var(--size-8) auto;
-    font-size: var(--size-5);
-    line-height: var(--size-8);
-    background-color: var(--color-grey-100);
-    border-radius: 6px;
-    padding: var(--size-4);
-    p {
-        color: var(--color-grey-800);
-    }
-    image {
-        margin: var(--size-4) auto;
-        width: 100%;
-        max-width: 600px;
-    }
-    @media (min-width: 768px) {
-        padding: var(--size-8);
-    }
-`;
+function PostContent(props: { post: any }) {
+    const { post } = props;
 
-export const PostContent = ({ post }: any) => {
     const imagePath = `/images/posts/${post.slug}/${post.image}`;
+
+    const customRenderers = {
+        // img(image) {
+        //   return (
+        //     <Image
+        //       src={`/images/posts/${post.slug}/${image.src}`}
+        //       alt={image.alt}
+        //       width={600}
+        //       height={300}
+        //     />
+        //   );
+        // },
+        p(paragraph: { children?: any; node?: any }) {
+            const { node } = paragraph;
+
+            if (node.children[0].tagName === 'img') {
+                const image = node.children[0];
+
+                return (
+                    <div className={classes.image}>
+                        <Image
+                            src={`/images/posts/${post.slug}/${image.properties.src}`}
+                            alt={image.alt}
+                            width={600}
+                            height={300}
+                        />
+                    </div>
+                );
+            }
+
+            return <p>{paragraph.children}</p>;
+        },
+    };
+
     return (
-        <Content>
+        <article className={classes.content}>
             <PostHeader title={post.title} image={imagePath} />
-            <ReactMarkdown>{post.content}</ReactMarkdown>
-        </Content>
+            <ReactMarkdown components={customRenderers}>{post.content}</ReactMarkdown>
+        </article>
     );
-};
+}
+
+export default PostContent;
