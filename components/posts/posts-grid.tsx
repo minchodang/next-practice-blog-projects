@@ -18,7 +18,6 @@ const Grid = styled.ul`
 `;
 
 export const PostsGrid = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
-    console.log(posts, '뭐냐 또 왜 됨?');
     return (
         <Grid>
             {posts.map((post) => (
