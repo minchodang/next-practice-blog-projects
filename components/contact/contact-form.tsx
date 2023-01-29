@@ -77,7 +77,7 @@ const ContactForm = () => {
     const [enteredMessage, setEnteredMessage] = useState('');
     const sendMessageHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        fetch(' /api/contact', {
+        fetch('/api/contact', {
             method: 'POST',
             body: JSON.stringify({
                 email: enteredEmail,
