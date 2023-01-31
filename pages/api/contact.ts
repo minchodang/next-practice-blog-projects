@@ -33,7 +33,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 
         try {
             client = await MongoClient.connect(
-                'mongodb+srv://minsu:vw9418834@cluster0.l1xz3m6.mongodb.net/my-blog?retryWrites=true&w=majority',
+                `mongodb+srv://${process.env.MONGO_ID}:${process.env.MONGO_KEY}@cluster0.l1xz3m6.mongodb.net/my-blog?retryWrites=true&w=majority`,
             );
         } catch (error) {
             res.status(500).json({ message: 'Could not connect to database.' });
