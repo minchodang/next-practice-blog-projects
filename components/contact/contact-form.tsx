@@ -1,6 +1,10 @@
 import styled from '@emotion/styled';
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
+import Notification from '../ui/notification';
 
+type ErrorWithMessage = {
+    message: string;
+};
 const Contact = styled.section`
     margin: var(--size-8) auto;
     border-radius: 6px;
@@ -71,24 +75,79 @@ const Actions = styled.div`
     text-align: right;
 `;
 
+async function sendContactData(contactDetails: { email: string; name: string; message: string }) {
+    const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: JSON.stringify(contactDetails),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.message || 'Something went wrong!');
+    }
+    return data;
+}
+
 const ContactForm = () => {
     const [enteredEmail, setEnteredEmail] = useState('');
     const [enteredName, setEnteredName] = useState('');
     const [enteredMessage, setEnteredMessage] = useState('');
-    const sendMessageHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    const [requestStatus, setRequestStatus] = useState<string | null>();
+    const [requestError, setRequestError] = useState<string | null>();
+
+    useEffect(() => {
+        if (requestStatus === 'success' || requestStatus === 'error') {
+            const timer = setTimeout(() => {
+                setRequestStatus(null);
+                setRequestError(null);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [requestStatus]);
+
+    const sendMessageHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        fetch('/api/contact', {
-            method: 'POST',
-            body: JSON.stringify({
+        setRequestStatus('pending');
+        try {
+            await sendContactData({
                 email: enteredEmail,
                 name: enteredName,
                 message: enteredMessage,
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+            });
+            setRequestStatus('success');
+            setEnteredMessage('');
+            setEnteredEmail('');
+            setEnteredName('');
+        } catch (error: any) {
+            setRequestError(error.message);
+            setRequestStatus('error');
+        }
     };
+    let notification;
+    if (requestStatus === 'pending') {
+        notification = {
+            status: 'pending',
+            title: 'Sending message...',
+            message: 'Your message is on its way',
+        };
+    }
+    if (requestStatus === 'success') {
+        notification = {
+            status: 'success',
+            title: 'Success!',
+            message: 'Message sent successfully',
+        };
+    }
+    if (requestStatus === 'error') {
+        notification = {
+            status: 'error',
+            title: 'Error!',
+            message: requestError,
+        };
+    }
+
     return (
         <Contact>
             <h1>How can I help you?</h1>
@@ -129,6 +188,13 @@ const ContactForm = () => {
                     <button>Send Message</button>
                 </Actions>
             </Form>
+            {notification && (
+                <Notification
+                    title={notification.title}
+                    message={notification.message}
+                    status={notification.status}
+                />
+            )}
         </Contact>
     );
 };
