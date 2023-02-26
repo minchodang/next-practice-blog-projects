@@ -31,10 +31,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 
         let client;
 
+        const connectionString = `mongodb+srv://${process.env.MONGO_ID}:${process.env.MONGO_KEY}@${process.env.MONGO_CLUSTER_NAME}.l1xz3m6.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`;
+
         try {
-            client = await MongoClient.connect(
-                `mongodb+srv://${process.env.MONGO_ID}:${process.env.MONGO_KEY}@cluster0.l1xz3m6.mongodb.net/my-blog?retryWrites=true&w=majority`,
-            );
+            client = await MongoClient.connect(connectionString);
         } catch (error) {
             res.status(500).json({ message: 'Could not connect to database.' });
             return;
